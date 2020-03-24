@@ -9,13 +9,13 @@ function parseArrayToString(array $datas)
 
     $maxLength = [];
     foreach ($keys as $key) {
-        $maxLength[] = mb_strlen($key, "utf-8");
+        $maxLength[] = multiStringLength($key);
     }
     $index = 0;
     foreach ($datas as $data) {
         foreach ($keys as $key) {
-            $maxLength[$index] = $maxLength[$index] < mb_strlen($data["$key"], "utf-8") ?
-                                 mb_strlen($data["$key"], "utf-8") : $maxLength[$index];
+            $maxLength[$index] = $maxLength[$index] < multiStringLength($data["$key"]) ?
+                                 multiStringLength($data["$key"]) : $maxLength[$index];
             $index++;
         }
         $index = 0;
@@ -24,7 +24,12 @@ function parseArrayToString(array $datas)
     foreach ($keys as $key) {
         $string .= $key;
         if ($key != $keys[count($keys) - 1]) {
-            $string .= str_repeat("・", $maxLength[$index] + 3 - mb_strlen($key, "utf-8"));
+            if (($maxLength[$index] - multiStringLength($key)) % 2 == 0) {
+                $string .= str_repeat("　", floor(($maxLength[$index] + 6 - multiStringLength($key)) / 2));
+            } else {
+                $string .= " ";
+                $string .= str_repeat("　", floor(($maxLength[$index] + 6 - multiStringLength($key)) / 2));
+            }
             $index++;
         }
     }
@@ -35,7 +40,12 @@ function parseArrayToString(array $datas)
         foreach ($keys as $key) {
             $string .= $data["$key"];
             if ($key != $keys[count($keys) - 1]) {
-                $string .= str_repeat("・", $maxLength[$index] + 3 - mb_strlen($data["$key"], "utf-8"));
+                if (($maxLength[$index] - multiStringLength($data["$key"])) % 2 == 0) {
+                    $string .= str_repeat("　", floor(($maxLength[$index] + 6 - multiStringLength($data["$key"])) / 2));
+                } else {
+                    $string .= " ";
+                    $string .= str_repeat("　", floor(($maxLength[$index] + 6 - multiStringLength($data["$key"])) / 2));
+                }
             }
             $index++;
         }
@@ -44,4 +54,19 @@ function parseArrayToString(array $datas)
     }
 
     return $string;
+}
+
+function multiStringLength($string)
+{
+    $mb_strlen = mb_strlen($string, 'UTF-8');
+    $multiStringLength = 0;
+    for ($i = 0; $i < $mb_strlen; $i++) {
+        $s = mb_substr($string, $i, 1, 'UTF-8');
+        if (strlen($s) == 1) {
+            $multiStringLength++;
+        } else {
+            $multiStringLength += 2;
+        }
+    }
+    return $multiStringLength;
 }
