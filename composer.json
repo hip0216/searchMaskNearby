@@ -1,7 +1,15 @@
 {
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
     "require": {
         "league/climate": "^3.5",
         "jamesgordo/php-csv-parser": "^1.0",
         "sebbmeyer/php-microsoft-teams-connector": "^0.1.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
     }
 }
