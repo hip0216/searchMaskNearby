@@ -1,8 +1,7 @@
 {
     "autoload": {
-        "classmap": [
-            "src/"
-        ]
+        "classmap": ["src/"],
+        "files": ["src/"]
     },
     "require": {
         "league/climate": "^3.5",
