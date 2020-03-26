@@ -1,5 +1,6 @@
 <?php
 require_once("vendor/autoload.php");
+require_once("argvParser.php");
 use JamesGordo\CSV\Parser;
 use League\CLImate\CLImate;
 
@@ -35,6 +36,9 @@ if (downloadFile() === false) {
     print("下載檔案錯誤");
     exit();
 }
+// parser
+$parser = new argvParser($argv);
+$option = $parser->getOption();
 
 $datas = new Parser("maskdata.csv");
 $outPutDatas = [];
