@@ -17,11 +17,11 @@ class argvParser
         $sortval = 'adult, child, sum, addr, init';
         $this->argv = $argv;
         $this->specs = new OptionCollection;
-        $this->specs->add('s|sort+', '排序方法'.$sortval)
+        $this->specs->add('sort:', '排序方法'.$sortval)
             ->isa('string');
-        $this->specs->add('sortDecrease+', '排序方法'.$sortval)
+        $this->specs->add('sortDecrease:', '排序方法'.$sortval)
             ->isa('string');
-        $this->specs->add('sortIncrease+', '排序方法'.$sortval)
+        $this->specs->add('sortIncrease:', '排序方法'.$sortval)
             ->isa('string');
 
         $this->specs->add('d|address+', '篩選地址')
@@ -32,7 +32,7 @@ class argvParser
             ->isa('Number');
         $this->specs->add('c|child+', '用小孩口罩數量篩選')
             ->isa('Number');
-        $this->specs->add('sum+', '用總數篩選')
+        $this->specs->add('s|sum+', '用總數篩選')
             ->isa('Number');
         $this->specs->add('returnLimit:', '最大回傳數量')
             ->isa('Number');
