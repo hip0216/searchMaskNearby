@@ -3,37 +3,37 @@ use PHPUnit\Framework\TestCase;
 
 final class MapKeyTest extends TestCase
 {
-    public function testMapKeyExpectMappingRightWhenInputArrayCountIsSingle(): void
+    public function testmapToTableHeadersExpectMappingRightWhenInputArrayCountIsSingle(): void
     {
-        $this->assertEquals( ['成人口罩'], mapKey(['a']) );
-        $this->assertEquals( ['成人口罩'], mapKey(['adult']) );
-        $this->assertEquals( ['成人口罩'], mapKey(['default']) );
-        $this->assertEquals( ['孩童口罩'], mapKey(['c']) );
-        $this->assertEquals( ['孩童口罩'], mapKey(['child']) );
-        $this->assertEquals( ['口罩總數'], mapKey(['s']) );
-        $this->assertEquals( ['口罩總數'], mapKey(['sum']) );
-        $this->assertEquals( ['機構名稱'], mapKey(['i']) );
-        $this->assertEquals( ['機構名稱'], mapKey(['institution']) );
-        $this->assertEquals( ['機構地址'], mapKey(['d']) );
-        $this->assertEquals( ['機構地址'], mapKey(['address']) );
+        $this->assertEquals( ['成人口罩'], mapToTableHeaders(['a']) );
+        $this->assertEquals( ['成人口罩'], mapToTableHeaders(['adult']) );
+        $this->assertEquals( ['成人口罩'], mapToTableHeaders(['default']) );
+        $this->assertEquals( ['孩童口罩'], mapToTableHeaders(['c']) );
+        $this->assertEquals( ['孩童口罩'], mapToTableHeaders(['child']) );
+        $this->assertEquals( ['口罩總數'], mapToTableHeaders(['s']) );
+        $this->assertEquals( ['口罩總數'], mapToTableHeaders(['sum']) );
+        $this->assertEquals( ['機構名稱'], mapToTableHeaders(['i']) );
+        $this->assertEquals( ['機構名稱'], mapToTableHeaders(['institution']) );
+        $this->assertEquals( ['機構地址'], mapToTableHeaders(['d']) );
+        $this->assertEquals( ['機構地址'], mapToTableHeaders(['address']) );
     }
     
-    public function testMapKeyExpectMappingRightWhenInputArrayCountIsMultiple(): void
+    public function testmapToTableHeadersExpectMappingRightWhenInputArrayCountIsMultiple(): void
     {
-        $this->assertEquals( ['成人口罩', '孩童口罩'], mapKey(['a', 'c']) );
-        $this->assertEquals( ['孩童口罩', '成人口罩'], mapKey(['c', 'a']) );
-        $this->assertEquals( ['機構地址', '成人口罩', '口罩總數', '機構名稱', '孩童口罩'], mapKey(['d', 'a', 's', 'i', 'c']) );
+        $this->assertEquals( ['成人口罩', '孩童口罩'], mapToTableHeaders(['a', 'c']) );
+        $this->assertEquals( ['孩童口罩', '成人口罩'], mapToTableHeaders(['c', 'a']) );
+        $this->assertEquals( ['機構地址', '成人口罩', '口罩總數', '機構名稱', '孩童口罩'], mapToTableHeaders(['d', 'a', 's', 'i', 'c']) );
     }
 
-    public function testMapKeyExpectEmptyArrayWhenInputArrayIsEmpty(): void
+    public function testmapToTableHeadersExpectEmptyArrayWhenInputArrayIsEmpty(): void
     {
-        $this->assertEquals( [], mapKey([]) );
+        $this->assertEquals( [], mapToTableHeaders([]) );
     }
 
-    public function MapKeyExpectFilteredArrayWhenInputArrayIsImpure(): void
+    public function mapToTableHeadersExpectFilteredArrayWhenInputArrayIsImpure(): void
     {
-        $this->assertEquals( ['機構名稱', '口罩總數', '成人口罩'], mapKey(['dirty','institution', 'bad', 'sum', 'address']) );
-        $this->assertEquals( ['機構名稱', '口罩總數', '成人口罩'], mapKey(['institution', 'hello', 'sum', 'address', 'hi']) );
-        $this->assertEquals( ['機構名稱', '口罩總數', '成人口罩'], mapKey(['institution', 'sum', 'lol',  'address', 'sorry']) );
+        $this->assertEquals( ['機構名稱', '口罩總數', '成人口罩'], mapToTableHeaders(['dirty','institution', 'bad', 'sum', 'address']) );
+        $this->assertEquals( ['機構名稱', '口罩總數', '成人口罩'], mapToTableHeaders(['institution', 'hello', 'sum', 'address', 'hi']) );
+        $this->assertEquals( ['機構名稱', '口罩總數', '成人口罩'], mapToTableHeaders(['institution', 'sum', 'lol',  'address', 'sorry']) );
     }
 }

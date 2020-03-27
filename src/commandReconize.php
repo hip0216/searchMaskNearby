@@ -1,4 +1,5 @@
 <?php
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 // hadn't finish, hadn't validate
 //function
@@ -14,31 +15,7 @@ function sortRule($r0, $r1)
 }
 
 /**
- * Return map of command values
- *
- * Since command value is not equal to table keys in $taable
- * Use mapKey to map those argument values to corresponded table keys
- *
- * @param array $vals input rgument values array for one command
- *
- * @return array return array where map each values to corresponded attribute of table
- */
-function mapKey(array $vals): array
-{
-    $mapping = [
-        'a' => "成人口罩", 'adult' => "成人口罩", 'default' => "成人口罩",
-        'c' => "孩童口罩", 'child' => "孩童口罩",
-        's' => "口罩總數", 'sum' => "口罩總數",
-        'i' => "機構名稱", 'init' => "機構名稱",
-        'ad' => "機構地址", 'addr' => "機構地址",
-    ];
-    foreach ($vals as $val) {
-        $sortKeys[] = $mapping[$val];
-    }
-    return $sortKeys ?? [];
-}
-
-/**
+ * 
  * 
  */
 function commandReconize(array $table, array $parameterPairs)
@@ -49,28 +26,30 @@ function commandReconize(array $table, array $parameterPairs)
         case 'sort':
         case 'sortDecrease':
         case 'sortIncrease':
-
             $sortKeys = $sortKeys ?? $mapping['default'];
             usort($table, sortRule);
-
             break;
-        case 'd':
-        case 'address':
-        case 'i':
-        case 'institution':
+
+        # filter part
         case 'a':
         case 'adult':
         case 'c':
         case 'child':
+        case 's':
         case 'sum':
-            $filterKeys[] = $mapping[$keys];
-            if (count($vals) === 1) {
-                $vals[] = '99999';
+        case 'd':
+        case 'address':
+        case 'i':
+        case 'institution':
+            $headersAsFilters[] = mapToTableHeaders($key);
+            $min = $vals[0];
+            $max = $vals[1] ?? '99999';
+            foreach ($table as $row) {
+                foreach ($headersAsFilters as $header) {
+                    if (!($min <= $row[$header] and $row[$header] <= $max)) break;
+                }
+                $ret[] = $row[$header];
             }
-                $table = array_values(array_filter($table, function ($r0, $r1) use ($vals) {
-                    return ;
-                }));
-
             break;
         case 'returnLimit':
         case 'setTeams':

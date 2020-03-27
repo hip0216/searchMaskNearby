@@ -9,7 +9,7 @@
  *
  * @return array return array where map each values to corresponded attribute of table
  */
-function mapKey(array $vals): array
+function mapToTableHeaders(array $vals): array
 {
     $mapping = [
         'a' => "成人口罩", 'adult' => "成人口罩", 'default' => "成人口罩",
