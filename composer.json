@@ -1,7 +1,15 @@
 {
+    "autoload": {
+        "classmap": ["src/"],
+        "files": ["src/mapKey.php"]
+    },
     "require": {
         "league/climate": "^3.5",
         "sebbmeyer/php-microsoft-teams-connector": "^0.1.3",
-        "corneltek/getoptionkit": "^2.6"
+        "corneltek/getoptionkit": "^2.6",
+        "jamesgordo/php-csv-parser": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
     }
 }

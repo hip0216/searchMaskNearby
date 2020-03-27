@@ -1,0 +1,16 @@
+language: php
+
+php:
+  - 7.3
+  - 7.4
+
+branches:
+  only:
+    - master
+    - commandReconize
+
+install:
+  - composer install
+
+script:
+  - php vendor/bin/phpunit tests
