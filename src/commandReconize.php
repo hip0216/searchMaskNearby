@@ -1,6 +1,44 @@
 <?php
 class CommandReconize
 {
+    private $table;
+    private $sortInIncrease = false;
+    private $sortHeaders = [];
+
+    /**
+     * construct of CommandReconize
+     */
+    public function __construct($table = [])
+    {
+        $this->table = $table;
+    }
+
+    /**
+     * setter function of sortInIncrease
+     */
+    public function setSortInIncrease(bool $b): CommandReconize
+    {
+        $this->sortInIncrease = $b;
+        return $this;
+    }
+
+    /**
+     * setter function of sortInIncrease
+     */
+    public function setSortHeaders(array $a): CommandReconize
+    {
+        $this->sortHeaders = $a;
+        return $this;
+    }
+
+    /**
+     * getter function of table
+     */
+    public function getTable(): array
+    {
+        return $this->table;
+    }
+
     /**
      * Return map of command values
      *
@@ -14,11 +52,11 @@ class CommandReconize
     public static function mapToTableHeaders(array $vals): array
     {
         $mapping = [
-            'a' => "成人口罩", 'adult' => "成人口罩", 'default' => "成人口罩",
-            'c' => "孩童口罩", 'child' => "孩童口罩",
-            's' => "口罩總數", 'sum' => "口罩總數",
-            'i' => "機構名稱", 'institution' => "機構名稱",
-            'd' => "機構地址", 'address' => "機構地址",
+            'a' => ADULT, 'adult' => ADULT, 'default' => ADULT,
+            'c' => CHILD, 'child' => CHILD,
+            's' => SUM, 'sum' => SUM,
+            'i' => INSTITUTION, 'institution' => INSTITUTION,
+            'd' => ADDRESS, 'address' => ADDRESS,
         ];
         foreach ($vals as $val) {
             $sortKeys[] = $mapping[$val];
@@ -34,40 +72,41 @@ class CommandReconize
      * 
      * @parma array $r0 a row of data
      * @parma array $r1 a row of data
-     * @global array $sortKeys An array contains headers in table we want to sort depends on them
-     * @global bool $sortInIncrease Sort result in increase or decrease will depends on this
+     * @var array $this->sortKeys An array contains headers in table we want to sort depends on them
+     * @var bool $this->sortInIncrease Sort result in increase or decrease will depends on this
      */
-    public static function sortRule(array $r0, array $r1)
+    public function sortRule(array $r0, array $r1): int
     {
-        global $sortHeaders;
-        global $sortInIncrease;
-        foreach ($sortHeaders as $sortKey) {
+        foreach ($this->sortHeaders as $sortKey) {
             $diff = $r0[$sortKey] - $r1[$sortKey];
             if ($diff) {
-                return $sortInIncrease ? $diff : -$diff;
+                return $this->sortInIncrease ? $diff : -$diff;
             }
         }
-        return false;
+        return 0;
     }
 
     /**
-     * 
+     * @parma array $table
+     * @parma array $cmdPairs
      * 
      */
-    function run(array $table, array $parameterPairs)
+    public function run(array $cmdPairs)
     {
-        foreach ($ParameterPairs as $key => $vals) {
-            switch ($key) {
+        foreach ($cmdPairs as $cmd => $vals) {
+            switch ($cmd) {
+            # sort part
             case 's':
             case 'sort':
             case 'sortDecrease':
                 $sortInIncrease = false;
-                $sortHeaders[] = mapToTableHeaders($vals);
+                $this->sortHeaders = self::mapToTableHeaders($vals);
+                usort($this->table, 'self::sortRule');
+                break;
             case 'sortIncrease':
                 $sortInIncrease = true;
-
-                usort($table, sortRule);
-                print_r($table);
+                $this->sortHeaders = self::mapToTableHeaders($vals);
+                usort($this->table, 'self::sortRule');
                 break;
 
             # filter part
@@ -81,10 +120,10 @@ class CommandReconize
             case 'address':
             case 'i':
             case 'institution':
-                $headersAsFilters[] = mapToTableHeaders($key);
+                $headersAsFilters[] = self::mapToTableHeaders([$cmd]);
                 $min = $vals[0];
                 $max = $vals[1] ?? '99999';
-                foreach ($table as $row) {
+                foreach ($this->table as $row) {
                     foreach ($headersAsFilters as $header) {
                         if (!($min <= $row[$header] and $row[$header] <= $max)) break;
                     }

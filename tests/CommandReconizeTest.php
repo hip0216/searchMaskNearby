@@ -40,7 +40,7 @@ final class CommandReconizeTest extends TestCase
 
     public function testSortRuleExpectMultiSortedIncreaseWhenSortInIncrease(): void
     {
-        $input = [
+        $table = [
             ['a' => 2, 'b' => 4, 'c' => 6],
             ['a' => 1, 'b' => 4, 'c' => 6],
             ['a' => 1, 'b' => 4, 'c' => 5],
@@ -50,8 +50,7 @@ final class CommandReconizeTest extends TestCase
             ['a' => 2, 'b' => 3, 'c' => 5],
             ['a' => 2, 'b' => 4, 'c' => 5],
         ];
-        global $sortInIncrease;  // bool
-        global $sortHeaders;  // array of Headers
+        $cmdRcnz = new CommandReconize();
 
         $expectIncAbc = [
             ['a' => 1, 'b' => 3, 'c' => 5],
@@ -63,10 +62,10 @@ final class CommandReconizeTest extends TestCase
             ['a' => 2, 'b' => 4, 'c' => 5],
             ['a' => 2, 'b' => 4, 'c' => 6],
         ];
-        $sortInIncrease = true;
-        $sortHeaders = ['a', 'b', 'c'];
-        usort($input, 'CommandReconize::sortRule');
-        $this->assertEquals($expectIncAbc, $input);
+        $cmdRcnz->setSortInIncrease(true);
+        $cmdRcnz->setSortHeaders(['a', 'b', 'c']);
+        usort($table, [$cmdRcnz, 'sortRule']);
+        $this->assertEquals($expectIncAbc, $table);
 
         $expectIncCab = [
             ['a' => 1, 'b' => 3, 'c' => 5],
@@ -78,15 +77,15 @@ final class CommandReconizeTest extends TestCase
             ['a' => 2, 'b' => 3, 'c' => 6],
             ['a' => 2, 'b' => 4, 'c' => 6],
         ];
-        $sortInIncrease = true;
-        $sortHeaders = ['c', 'a', 'b'];
-        usort($input, 'CommandReconize::sortRule');
-        $this->assertEquals($expectIncCab, $input);
+        $cmdRcnz->setSortInIncrease(true);
+        $cmdRcnz->setSortHeaders(['c', 'a', 'b']);
+        usort($table, [$cmdRcnz, 'sortRule']);
+        $this->assertEquals($expectIncCab, $table);
     }
 
     public function testSortRuleExpectMultiSortedDecreaseWhenSortInDecrease(): void
     {
-        $input = [
+        $table = [
             ['a' => 2, 'b' => 4, 'c' => 6],
             ['a' => 1, 'b' => 4, 'c' => 6],
             ['a' => 1, 'b' => 4, 'c' => 5],
@@ -96,8 +95,7 @@ final class CommandReconizeTest extends TestCase
             ['a' => 2, 'b' => 3, 'c' => 5],
             ['a' => 2, 'b' => 4, 'c' => 5],
         ];
-        global $sortInIncrease;  // bool
-        global $sortHeaders;  // array of Headers
+        $cmdRcnz = new CommandReconize();
 
         $expectDecAbc = [
             ['a' => 2, 'b' => 4, 'c' => 6],
@@ -109,10 +107,10 @@ final class CommandReconizeTest extends TestCase
             ['a' => 1, 'b' => 3, 'c' => 6],
             ['a' => 1, 'b' => 3, 'c' => 5],
         ];
-        $sortInIncrease = false;
-        $sortHeaders = ['a', 'b', 'c'];
-        usort($input, 'CommandReconize::sortRule');
-        $this->assertEquals($expectDecAbc, $input);
+        $cmdRcnz->setSortInIncrease(false);
+        $cmdRcnz->setSortHeaders(['a', 'b', 'c']);
+        usort($table, [$cmdRcnz, 'sortRule']);
+        $this->assertEquals($expectDecAbc, $table);
         
         $expectDecBac = [
             ['a' => 2, 'b' => 4, 'c' => 6],
@@ -124,9 +122,72 @@ final class CommandReconizeTest extends TestCase
             ['a' => 1, 'b' => 3, 'c' => 6],
             ['a' => 1, 'b' => 3, 'c' => 5],
         ];
-        $sortInIncrease = false;
-        $sortHeaders = ['b', 'a', 'c'];
-        usort($input, 'CommandReconize::sortRule');
-        $this->assertEquals($expectDecBac, $input);
+        $cmdRcnz->setSortInIncrease(false);
+        $cmdRcnz->setSortHeaders(['b', 'a', 'c']);
+        usort($table, [$cmdRcnz, 'sortRule']);
+        $this->assertEquals($expectDecBac, $table);
+    }
+
+    public function testRunExpectNoWhenNo(): void
+    {
+        $r0 = [
+            ID => 0,
+            INSTITUTION => '天堂健康服務中心',
+            ADDRESS => '天堂路三段',
+            PHONENUMBER => '(77)54875487',
+            ADULT => 80,
+            CHILD => 20,
+            SUM => 100
+        ];
+        $r1 = [
+            ID => 1,
+            INSTITUTION => '天堂衛生所',
+            ADDRESS => '天地路七段',
+            PHONENUMBER => '(77)27371666',
+            ADULT => 0,
+            CHILD => 50,
+            SUM => 50
+        ];
+        $r2 = [
+            ID => 2,
+            INSTITUTION => '地獄健康服務中心',
+            ADDRESS => '地獄路三段',
+            PHONENUMBER => '(66)66666666',
+            ADULT => 666,
+            CHILD => 666,
+            SUM => 1332
+        ];
+        $r3 = [
+            ID => 3,
+            INSTITUTION => '地獄衛生所',
+            ADDRESS => '地獄路六段',
+            PHONENUMBER => '(66)74539688',
+            ADULT => 99,
+            CHILD => 0,
+            SUM => 99
+        ];
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3]);
+        $cmdRcnz->run(["sort" => ['a']]);
+        $this->assertEquals([$r2, $r3, $r0, $r1], $cmdRcnz->getTable());
+        $cmdRcnz->run(["sort" => ['c']]);
+        $this->assertEquals([$r2, $r1, $r0, $r3], $cmdRcnz->getTable());
+        $cmdRcnz->run(["sort" => ['s']]);
+        $this->assertEquals([$r2, $r0, $r3, $r1], $cmdRcnz->getTable());
+
+        // $cmdRcnz->run(["sort" => ['d']]);
+        // $this->assertEquals([$r2, $r0, $r3, $r1], $cmdRcnz->getTable());
+        // $cmdRcnz->run(["sort" => ['i']]);
+
+        $cmdRcnz->run(["sort" => ['adult']]);
+        $this->assertEquals([$r2, $r3, $r0, $r1], $cmdRcnz->getTable());
+        $cmdRcnz->run(["sort" => ['child']]);
+        $this->assertEquals([$r2, $r1, $r0, $r3], $cmdRcnz->getTable());
+        $cmdRcnz->run(["sort" => ['sum']]);
+        $this->assertEquals([$r2, $r0, $r3, $r1], $cmdRcnz->getTable());
+
+        // $cmdRcnz->run(["sort" => ['address']]);
+        // $cmdRcnz->run(["sort" => ['institution']]);
+        //$this->assertEquals(, );
     }
 }

@@ -1,7 +1,7 @@
 {
     "autoload": {
         "classmap": ["src/"],
-        "files": []
+        "files": ["src/DEFINE.php"]
     },
     "require": {
         "league/climate": "^3.5",
