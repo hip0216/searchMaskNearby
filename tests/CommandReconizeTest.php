@@ -329,7 +329,7 @@ final class CommandReconizeTest extends TestCase
         $this->assertEquals([$r3, $r0, $r4, $r1, $r2], $cmdRcnz->getTable());
     }
 
-    public function testRunExpectFilterWhenFilterNumeric(): void
+    public function testRunExpectNumericFilterWorkWhenFilterNumeric(): void
     {
         $r0 = $this->r0;
         $r1 = $this->r1;
@@ -338,8 +338,146 @@ final class CommandReconizeTest extends TestCase
         $r4 = $this->r4;
 
         $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
-        $cmdRcnz->setFilterHeaders(['a']);
         $cmdRcnz->run(['a' => [50, 100]]);
         $this->assertEquals([$r0, $r3, $r4], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['c' => [50, 100]]);
+        $this->assertEquals([$r1], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['s' => [50, 100]]);
+        $this->assertEquals([$r0, $r1, $r3], $cmdRcnz->getTable());
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['adult' => [50, 100]]);
+        $this->assertEquals([$r0, $r3, $r4], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['child' => [50, 100]]);
+        $this->assertEquals([$r1], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['sum' => [50, 100]]);
+        $this->assertEquals([$r0, $r1, $r3], $cmdRcnz->getTable());
+    }
+
+    public function testRunExpectNumericFilterWorkWhenFilterNumericInputValusSingle(): void
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['a' => [50]]);
+        $this->assertEquals([$r0, $r2, $r3, $r4], $cmdRcnz->getTable());
+    }
+
+    public function testRunExpectAllPassArrayAndFilterExistWhenFilterStringNoKeyword(): void
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['i' => []]);
+        $this->assertEquals([$r0, $r1, $r2, $r3, $r4], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['institution' => []]);
+        $this->assertEquals([$r0, $r1, $r2, $r3, $r4], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['d' => []]);
+        $this->assertEquals([$r0, $r1, $r2, $r3, $r4], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['address' => []]);
+        $this->assertEquals([$r0, $r1, $r2, $r3, $r4], $cmdRcnz->getTable());
+    }
+
+    public function testRunExpectEmptyArrayAndFilterExistWhenFilterStringNoKeyword(): void
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['i' => ['早安']]);
+        $this->assertEquals([], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['d' => ['天邊']]);
+        $this->assertEquals([], $cmdRcnz->getTable());
+    }
+
+    public function testRunExpectStringFilterWorkWhenFilterStringSingle(): void
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['i' => ['地獄']]);
+        $this->assertEquals([$r2, $r3], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['d' => ['三段']]);
+        $this->assertEquals([$r0, $r2], $cmdRcnz->getTable());
+    }
+
+    public function testRunExpectStringFilterWorkWhenFilterStringMulti(): void
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['i' => ['地獄', '中心']]);
+        $this->assertEquals([$r2], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['d' => ['地', '段']]);
+        $this->assertEquals([$r1, $r2, $r3], $cmdRcnz->getTable());
+    }
+
+    public function testRunExpectStringFilterLayeredWorkWhenFilterStringMulti(): void
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['d' => ['地', '段']]);
+        $cmdRcnz->run(['d' => ['獄']]);
+        $this->assertEquals([$r2, $r3], $cmdRcnz->getTable());
+    }
+
+    public function testRunExpectPassWhenMultiCommandExist(): void 
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['a'=> [10], 'd' => ['地']]);
+        $this->assertEquals([$r2, $r3], $cmdRcnz->getTable());
+    }
+
+    public function testRunExpectReturnSizeRestrictedWhenSetReturnLimit(): void
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['returnLimit' => [2]]);
+        $this->assertEquals([$r0, $r1], $cmdRcnz->getTable());
     }
 }

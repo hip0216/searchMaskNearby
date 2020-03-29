@@ -5,6 +5,7 @@ class CommandReconize
     private $sortInIncrease = false;
     private $sortHeaders = [];
     private $filterHeaders = [];
+    private $returnLimit = 30;
 
     /**
      * construct of CommandReconize
@@ -46,7 +47,7 @@ class CommandReconize
      */
     public function getTable(): array
     {
-        return $this->table;
+        return array_slice($this->table, 0, $this->returnLimit);
     }
 
     /**
@@ -55,6 +56,11 @@ class CommandReconize
      * Since command value is not equal to table keys in $taable
      * Use mapKey to map those argument values to corresponded table keys
      *
+     * Usage:
+     *     mapToTableHeaders('a') => '成人口罩'
+     *                        ＾
+     *  a | c | s | i | d | adult | child | sum | institution | address
+     * 
      * @param array $vals input rgument values array for one command
      *
      * @return array return array where map each values to corresponded attribute of table
@@ -75,18 +81,24 @@ class CommandReconize
     }
     
     /**
-     * Sorting rule for commandReconize sort genre command to call
+     * Sorting rule for sort genre command to call
      * 
      * THis function can sort by multiple header
      * Use this with usort to sort array
      * Since we need to support string sorting, we can't use '-' as $diff in program
      * 
+     * Usage:
+     *     $this->setSortInIncrease = true; // or false
+     *     usort($this->table, sortRule);
+     *     print_r($this->getTable());
+     * 
      * @parma array $r0 a row of data
      * @parma array $r1 a row of data
      * @var array $this->sortKeys An array contains headers in table we want to sort depends on them
      * @var bool $this->sortInIncrease Sort result in increase or decrease will depends on this
+     * @return bool if a ceil is higher than another?
      */
-    public function sortRule(array $r0, array $r1): int
+    public function sortRule(array $r0, array $r1): bool
     {
         foreach ($this->sortHeaders as $sortKey) {
             $diff = $r0[$sortKey] > $r1[$sortKey];
@@ -97,56 +109,96 @@ class CommandReconize
         return 0;
     }
 
+    /**
+     * Filtering rule for filterNumeric genre command to call
+     * 
+     * This function can found all row with specific range mask
+     * We need to put that key in $this->filterHeaders[0] first (IMPORTANT)
+     * Header accept only one at a time
+     * 
+     * Usage:           a | c | s | adult | child | sum
+     *                               v
+     *     $this->setFilterHeaders(['a']);  // search adult mask (accept only one)
+     *     $this->numericFilter(0, 100);  // count between 0~100
+     *     print_r($this->getTable());
+     * 
+     * @parma int $min a min mask count allowed
+     * @parma int $max a row mask count allowed
+     * @var array $this->filterHeaders First element contains filter header
+     */
     public function numericFilter(int $min, int $max): void
     {
-        $ret = [];
         foreach ($this->table as $row) {
-            $success = true;
-
-            foreach ($this->filterHeaders as $header) {
-                echo $header."\n";
-                //$header = $this->filterHeaders[0];
-                if (!($min <= $row[$header] and $row[$header] <= $max)) {
-                    $success = false;
-                    break;
-                }
-            }
-            if ($success) {
+            $header = $this->filterHeaders[0];
+            if ($min <= $row[$header] and $row[$header] <= $max) {
                 $ret[] = $row;
             }
         }
-        $this->table = $ret;
-    }
-
-    public function stringFilter(array $needles): void
-    {
-        // $ret = [];
-        // foreach ($this->table as $row) {
-        //     $success = true;
-        //     foreach ($this->filterHeaders as $header) {
-        //         if (!($min <= $row[$header] and $row[$header] <= $max)) {
-        //             $success = false;
-        //             break;
-        //         }
-        //     }
-        //     if ($success) {
-        //         $ret[] = $row;
-        //     }
-        // }
-        // $this->table = $ret;
+        $this->table = $ret ?? [];
     }
 
     /**
-     * @parma array $table
-     * @parma array $cmdPairs
+     * Filtering rule for filterString genre command to call
      * 
+     * This function can found all row with specific keywords
+     * We need to put that key in $this->filterHeaders[0] first (IMPORTANT)
+     * Header accept only one at a time
+     * Keyword accept multiple at a time, which will be "and" for all of them
+     * 
+     * Usage:
+     *                   i | d | institution | address
+     *                               v
+     *     $this->setFilterHeaders(['d']);  // search adult mask (accept only one)
+     *     $this->stringFilter(['keyword1' , 'keyword2']);  // keyword to search
+     *     print_r($this->getTable());
+     * 
+     * @parma array $keywords array contain we want to search
+     * @var array $this->filterHeaders First element contains filter header
+     */
+    public function stringFilter(array $keywords): void
+    {
+        $header = $this->filterHeaders[0];
+        foreach ($this->table as $row) {
+            $success = true;
+            foreach ($keywords as $keyword) {
+                if (strpos($row[$header], $keyword) === false) {
+                     $success = false;
+                     break;
+                }
+            }
+            if ($success)
+                $ret[] = $row;
+        }
+        $this->table = $ret ?? [];
+    }
+
+    /**
+     * Run the function to reconize to command
+     * 
+     * The passing rule are as follow:
+     * 
+     * Usage:
+     *     $this->run([
+     *         'a' => [100], # Adult mask equal or more than 100
+     *         'c' => [0, 999], # Child mask between 0 - 99
+     *         's' => [100, 500] # Sum of mask between 100 - 500
+     *         'i' => ['衛生所'] # Institution name contain '衛生所'
+     *         'd' => ['臺北', '中山'] # Address contain '台北' and ‘中山’
+     *         'sort' => ['a', 'c', 'i'] # Sort follow as:
+     *                # adult mask count, child mask count and institution name
+     *         'returnLimit' => [15] # Return restrict 15 rows of data
+     *     ]);
+     * 
+     * @example Header accept only one at a time
+     * 
+     * @parma array $cmdPairs Contain [cmdkey -> [*cmd values*]]
+     * @var $this->talbe
      */
     public function run(array $cmdPairs)
     {
         foreach ($cmdPairs as $cmd => $vals) {
             switch ($cmd) {
             # sort part
-            case 's':
             case 'sort':
             case 'sortDecrease':
                 $this->sortInIncrease = false;
@@ -180,7 +232,9 @@ class CommandReconize
                 $this->filterHeaders = self::mapToTableHeaders([$cmd]);
                 $this->stringFilter($vals);
                 break;
+
             case 'returnLimit':
+                $this->returnLimit = min($vals[0], 30);
                 break;
             case 'setTeams':
                 break;
@@ -189,7 +243,6 @@ class CommandReconize
             }
         }
     }
-
 }
 
 
