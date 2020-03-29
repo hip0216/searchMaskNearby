@@ -405,7 +405,7 @@ final class CommandReconizeTest extends TestCase
         $cmdRcnz->run(['i' => ['早安']]);
         $this->assertEquals([], $cmdRcnz->getTable());
         $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
-        $cmdRcnz->run(['d' => ['天邊']]);
+        $cmdRcnz->run(['d' => ['天邊']]);
         $this->assertEquals([], $cmdRcnz->getTable());
     }
 
