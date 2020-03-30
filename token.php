@@ -1,12 +1,4 @@
 <?php
 
-namespace SmallFreshMeat;
-
-class Token
-{
-    private const TEAMS_WEBHOOK_TOKEN = 'MY_TOKEN';
-    public function getTeamsWebhookToken()
-    {
-        return self::TEAMS_WEBHOOK_TOKEN;
-    }
-}
+const TEAMS_WEBHOOK_TOKEN = 'MY_TEAMS_WEBHOOK_TOKEN';
+const GOOGLE_API_ACCESS_KEY = 'MY_GOOGLE_API_ACCESS_KEY';

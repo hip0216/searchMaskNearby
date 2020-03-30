@@ -7,7 +7,6 @@ use Sebbmyr\Teams\TeamsConnector;
 require 'token.php';
 require 'teamsMessage/messageCard.php';
 require 'teamsMessage/parseArrayToString.php';
-use SmallFreshMeat\Token;
 use SmallFreshMeat\Teams\MessageCard;
 use function SmallFreshMeat\parseArrayToString;
 
@@ -29,8 +28,7 @@ $outPutDatas = [
     ]
 ];
 
-$token = new Token();
-$webhook = $token->getTeamsWebhookToken();
+$webhook = TEAMS_WEBHOOK_TOKEN;
 $messageTitle = "查詢結果";
 $messageContent = parseArrayToString($outPutDatas);
 // echo $messageContent;
