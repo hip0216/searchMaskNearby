@@ -3,13 +3,15 @@
 require 'vendor/autoload.php';
 use Sebbmyr\Teams\TeamsConnector;
 
-// you should add your own token in token.php
+// You should add your own token in token.php
 require 'token.php';
 require 'teamsMessage/messageCard.php';
 require 'teamsMessage/parseArrayToString.php';
 use SmallFreshMeat\Teams\MessageCard;
 use function SmallFreshMeat\parseArrayToString;
 
+// Some fake datas for testing
+// For the real use, you need to provide datas in this format
 $outPutDatas = [
     [
         '醫事機構名稱' => '仁心藥局',
@@ -28,11 +30,20 @@ $outPutDatas = [
     ]
 ];
 
+// Require the webhook token
 $webhook = TEAMS_WEBHOOK_TOKEN;
+
+// Type your message title here
 $messageTitle = "查詢結果";
+// Transform the datas into string and make it formatted
 $messageContent = parseArrayToString($outPutDatas);
+
+// You can see the result in the command line if you want
 // echo $messageContent;
 
+// Set a Teams connect by webhook
 $connector = new TeamsConnector($webhook);
+// Create a Teams message card
 $card = new MessageCard($messageTitle, $messageContent);
+// Send the card to Teams' channel
 $connector->send($card);

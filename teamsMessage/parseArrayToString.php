@@ -2,6 +2,13 @@
 
 namespace SmallFreshMeat;
 
+/**
+ * Parse an array datas into a formatted string data
+ * 
+ * @param array $datas an array which contains some masks information datas
+ * 
+ * @return string $string return a formatted string data
+ */
 function parseArrayToString(array $datas)
 {
     $keys = array_keys($datas[0]);
@@ -56,6 +63,16 @@ function parseArrayToString(array $datas)
     return $string;
 }
 
+/**
+ * Return the length of a string.
+ * 
+ * The rule is: one English char equal one,
+ * in other hand, one Chinese char equal two.
+ * 
+ * @param string $string a string which you want to count the length of it
+ * 
+ * @return int $multiStringLength return the length of a string
+ */
 function multiStringLength($string)
 {
     $mb_strlen = mb_strlen($string, 'UTF-8');
