@@ -1,5 +1,5 @@
 <?php
-class CommandReconize
+class CommandRecognize
 {
     private $table;
     private $sortInIncrease = false;
@@ -8,7 +8,7 @@ class CommandReconize
     private $returnLimit = 30;
 
     /**
-     * construct of CommandReconize
+     * construct of CommandRecognize
      */
     public function __construct($table = [])
     {
@@ -18,7 +18,7 @@ class CommandReconize
     /**
      * setter function of sortInIncrease
      */
-    public function setSortInIncrease(bool $b): CommandReconize
+    public function setSortInIncrease(bool $b): CommandRecognize
     {
         $this->sortInIncrease = $b;
         return $this;
@@ -27,7 +27,7 @@ class CommandReconize
     /**
      * setter function of sortHeaders
      */
-    public function setSortHeaders(array $a): CommandReconize
+    public function setSortHeaders(array $a): CommandRecognize
     {
         $this->sortHeaders = $a;
         return $this;
@@ -36,7 +36,7 @@ class CommandReconize
     /**
      * setter function of filterHeaders
      */
-    public function setFilterHeaders(array $a): CommandReconize
+    public function setFilterHeaders(array $a): CommandRecognize
     {
         $this->filterHeaders = $a;
         return $this;

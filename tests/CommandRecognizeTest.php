@@ -1,41 +1,41 @@
 <?php
 use PHPUnit\Framework\TestCase;
 
-final class CommandReconizeTest extends TestCase
+final class CommandRecognizeTest extends TestCase
 {
     public function testMapToTableHeadersExpectMappingRightWhenInputArrayCountIsSingle(): void
     {
-        $this->assertSame( ['成人口罩'], CommandReconize::mapToTableHeaders(['a']) );
-        $this->assertSame( ['成人口罩'], CommandReconize::mapToTableHeaders(['adult']) );
-        $this->assertSame( ['成人口罩'], CommandReconize::mapToTableHeaders(['default']) );
-        $this->assertSame( ['孩童口罩'], CommandReconize::mapToTableHeaders(['c']) );
-        $this->assertSame( ['孩童口罩'], CommandReconize::mapToTableHeaders(['child']) );
-        $this->assertSame( ['口罩總數'], CommandReconize::mapToTableHeaders(['s']) );
-        $this->assertSame( ['口罩總數'], CommandReconize::mapToTableHeaders(['sum']) );
-        $this->assertSame( ['機構名稱'], CommandReconize::mapToTableHeaders(['i']) );
-        $this->assertSame( ['機構名稱'], CommandReconize::mapToTableHeaders(['institution']) );
-        $this->assertSame( ['機構地址'], CommandReconize::mapToTableHeaders(['d']) );
-        $this->assertSame( ['機構地址'], CommandReconize::mapToTableHeaders(['address']) );
+        $this->assertSame( ['成人口罩'], CommandRecognize::mapToTableHeaders(['a']) );
+        $this->assertSame( ['成人口罩'], CommandRecognize::mapToTableHeaders(['adult']) );
+        $this->assertSame( ['成人口罩'], CommandRecognize::mapToTableHeaders(['default']) );
+        $this->assertSame( ['孩童口罩'], CommandRecognize::mapToTableHeaders(['c']) );
+        $this->assertSame( ['孩童口罩'], CommandRecognize::mapToTableHeaders(['child']) );
+        $this->assertSame( ['口罩總數'], CommandRecognize::mapToTableHeaders(['s']) );
+        $this->assertSame( ['口罩總數'], CommandRecognize::mapToTableHeaders(['sum']) );
+        $this->assertSame( ['機構名稱'], CommandRecognize::mapToTableHeaders(['i']) );
+        $this->assertSame( ['機構名稱'], CommandRecognize::mapToTableHeaders(['institution']) );
+        $this->assertSame( ['機構地址'], CommandRecognize::mapToTableHeaders(['d']) );
+        $this->assertSame( ['機構地址'], CommandRecognize::mapToTableHeaders(['address']) );
     }
     
     public function testMapToTableHeadersExpectMappingRightWhenInputArrayCountIsMultiple(): void
     {
-        $this->assertSame( ['成人口罩', '孩童口罩'], CommandReconize::mapToTableHeaders(['a', 'c']) );
-        $this->assertSame( ['孩童口罩', '成人口罩'], CommandReconize::mapToTableHeaders(['c', 'a']) );
-        $this->assertSame( ['機構地址', '成人口罩', '口罩總數', '機構名稱', '孩童口罩'], CommandReconize::mapToTableHeaders(['d', 'a', 's', 'i', 'c']) );
+        $this->assertSame( ['成人口罩', '孩童口罩'], CommandRecognize::mapToTableHeaders(['a', 'c']) );
+        $this->assertSame( ['孩童口罩', '成人口罩'], CommandRecognize::mapToTableHeaders(['c', 'a']) );
+        $this->assertSame( ['機構地址', '成人口罩', '口罩總數', '機構名稱', '孩童口罩'], CommandRecognize::mapToTableHeaders(['d', 'a', 's', 'i', 'c']) );
     }
 
     public function testMapToTableHeadersExpectEmptyArrayWhenInputArrayIsEmpty(): void
     {
-        $this->assertSame( [], CommandReconize::mapToTableHeaders([]) );
+        $this->assertSame( [], CommandRecognize::mapToTableHeaders([]) );
     }
 
     // notActive
     public function mapToTableHeadersExpectFilteredArrayWhenInputArrayIsImpure(): void
     {
-        $this->assertSame( ['機構名稱', '口罩總數', '成人口罩'], CommandReconize::mapToTableHeaders(['dirty','institution', 'bad', 'sum', 'address']) );
-        $this->assertSame( ['機構名稱', '口罩總數', '成人口罩'], CommandReconize::mapToTableHeaders(['institution', 'hello', 'sum', 'address', 'hi']) );
-        $this->assertSame( ['機構名稱', '口罩總數', '成人口罩'], CommandReconize::mapToTableHeaders(['institution', 'sum', 'lol',  'address', 'sorry']) );
+        $this->assertSame( ['機構名稱', '口罩總數', '成人口罩'], CommandRecognize::mapToTableHeaders(['dirty','institution', 'bad', 'sum', 'address']) );
+        $this->assertSame( ['機構名稱', '口罩總數', '成人口罩'], CommandRecognize::mapToTableHeaders(['institution', 'hello', 'sum', 'address', 'hi']) );
+        $this->assertSame( ['機構名稱', '口罩總數', '成人口罩'], CommandRecognize::mapToTableHeaders(['institution', 'sum', 'lol',  'address', 'sorry']) );
     }
 
     // Test case for sortRule
@@ -53,7 +53,7 @@ final class CommandReconizeTest extends TestCase
     public function testSortRuleExpectMultiSortedIncreaseWhenSortInIncrease(): void
     {
         $table = $this->table;
-        $cmdRcnz = new CommandReconize();
+        $cmdRcnz = new CommandRecognize();
 
         $expectIncAbc = [
             ['a' => 1, 'b' => 3, 'c' => 5],
@@ -89,7 +89,7 @@ final class CommandReconizeTest extends TestCase
     public function testSortRuleExpectMultiSortedDecreaseWhenSortInDecrease(): void
     {
         $table = $this->table;
-        $cmdRcnz = new CommandReconize();
+        $cmdRcnz = new CommandRecognize();
 
         $expectDecAbc = [
             ['a' => 2, 'b' => 4, 'c' => 6],
@@ -131,7 +131,7 @@ final class CommandReconizeTest extends TestCase
             ['a' => 2, 'b' => 3, 'c' => 5],
             ['a' => 2, 'b' => 4, 'c' => 5],
         ];
-        $cmdRcnz = new CommandReconize($this->table);
+        $cmdRcnz = new CommandRecognize($this->table);
         $cmdRcnz->setFilterHeaders(['a']);
         $cmdRcnz->numericFilter(2, 3);
         $this->assertEquals($expectA23, $cmdRcnz->getTable());
@@ -142,7 +142,7 @@ final class CommandReconizeTest extends TestCase
             ['a' => 1, 'b' => 3, 'c' => 5],
             ['a' => 2, 'b' => 3, 'c' => 5],
         ];
-        $cmdRcnz = new CommandReconize($this->table);
+        $cmdRcnz = new CommandRecognize($this->table);
         $cmdRcnz->setFilterHeaders(['b']);
         $cmdRcnz->numericFilter(2, 3);
         $this->assertEquals($expectB23, $cmdRcnz->getTable());
@@ -157,7 +157,7 @@ final class CommandReconizeTest extends TestCase
             ['a' => 2, 'b' => 3, 'c' => 5],
             ['a' => 2, 'b' => 4, 'c' => 5],
         ];
-        $cmdRcnz = new CommandReconize($this->table);
+        $cmdRcnz = new CommandRecognize($this->table);
         $cmdRcnz->setFilterHeaders(['c']);
         $cmdRcnz->numericFilter(4, 7);
         $this->assertEquals($expectC47, $cmdRcnz->getTable());
@@ -170,7 +170,7 @@ final class CommandReconizeTest extends TestCase
             ['a' => 2, 'b' => 3, 'c' => 6],
             ['a' => 2, 'b' => 3, 'c' => 5],
         ];
-        $cmdRcnz = new CommandReconize($this->table);
+        $cmdRcnz = new CommandRecognize($this->table);
         $cmdRcnz->setFilterHeaders(['a']);
         $cmdRcnz->numericFilter(2, 3);
         $cmdRcnz->setFilterHeaders(['b']);
@@ -182,7 +182,7 @@ final class CommandReconizeTest extends TestCase
     {
 
         $expectA23 = [];
-        $cmdRcnz = new CommandReconize($this->table);
+        $cmdRcnz = new CommandRecognize($this->table);
         $cmdRcnz->setFilterHeaders(['a']);
         $cmdRcnz->numericFilter(2, 3);
         $cmdRcnz->setFilterHeaders(['b']);
@@ -246,7 +246,7 @@ final class CommandReconizeTest extends TestCase
         $r2 = $this->r2;
         $r3 = $this->r3;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3]);
         $cmdRcnz->run(['sort' => ['a']]);
         $this->assertEquals([$r2, $r3, $r0, $r1], $cmdRcnz->getTable());
         $cmdRcnz->run(['sort' => ['c']]);
@@ -269,7 +269,7 @@ final class CommandReconizeTest extends TestCase
         $r2 = $this->r2;
         $r3 = $this->r3;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3]);
         $cmdRcnz->run(['sort' => ['d']]);
         $this->assertEquals([$r0, $r1, $r3, $r2], $cmdRcnz->getTable());
         $cmdRcnz->run(['sort' => ['i']]);
@@ -288,7 +288,7 @@ final class CommandReconizeTest extends TestCase
         $r2 = $this->r2;
         $r3 = $this->r3;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3]);
         $cmdRcnz->run(['sortDecrease' => ['a']]);
         $this->assertEquals([$r2, $r3, $r0, $r1], $cmdRcnz->getTable());
         $cmdRcnz->run(['sortIncrease' => ['a']]);
@@ -303,7 +303,7 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['sort' => ['a', 'c']]);
         $this->assertEquals([$r2, $r4, $r3, $r0, $r1], $cmdRcnz->getTable());
         $cmdRcnz->run(['sort' => ['c', 'a']]);
@@ -318,7 +318,7 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['sortDecrease' => ['a', 'c']]);
         $this->assertEquals([$r2, $r4, $r3, $r0, $r1], $cmdRcnz->getTable());
         $cmdRcnz->run(['sortDecrease' => ['c', 'a']]);
@@ -337,23 +337,23 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['a' => [50, 100]]);
         $this->assertEquals([$r0, $r3, $r4], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['c' => [50, 100]]);
         $this->assertEquals([$r1], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['s' => [50, 100]]);
         $this->assertEquals([$r0, $r1, $r3], $cmdRcnz->getTable());
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['adult' => [50, 100]]);
         $this->assertEquals([$r0, $r3, $r4], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['child' => [50, 100]]);
         $this->assertEquals([$r1], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['sum' => [50, 100]]);
         $this->assertEquals([$r0, $r1, $r3], $cmdRcnz->getTable());
     }
@@ -366,7 +366,7 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['a' => [50]]);
         $this->assertEquals([$r0, $r2, $r3, $r4], $cmdRcnz->getTable());
     }
@@ -379,16 +379,16 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['i' => []]);
         $this->assertEquals([$r0, $r1, $r2, $r3, $r4], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['institution' => []]);
         $this->assertEquals([$r0, $r1, $r2, $r3, $r4], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['d' => []]);
         $this->assertEquals([$r0, $r1, $r2, $r3, $r4], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['address' => []]);
         $this->assertEquals([$r0, $r1, $r2, $r3, $r4], $cmdRcnz->getTable());
     }
@@ -401,10 +401,10 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['i' => ['早安']]);
         $this->assertEquals([], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['d' => ['天邊']]);
         $this->assertEquals([], $cmdRcnz->getTable());
     }
@@ -417,10 +417,10 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['i' => ['地獄']]);
         $this->assertEquals([$r2, $r3], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['d' => ['三段']]);
         $this->assertEquals([$r0, $r2], $cmdRcnz->getTable());
     }
@@ -433,10 +433,10 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['i' => ['地獄', '中心']]);
         $this->assertEquals([$r2], $cmdRcnz->getTable());
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['d' => ['地', '段']]);
         $this->assertEquals([$r1, $r2, $r3], $cmdRcnz->getTable());
     }
@@ -449,7 +449,7 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['d' => ['地', '段']]);
         $cmdRcnz->run(['d' => ['獄']]);
         $this->assertEquals([$r2, $r3], $cmdRcnz->getTable());
@@ -463,7 +463,7 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['a'=> [10], 'd' => ['地']]);
         $this->assertEquals([$r2, $r3], $cmdRcnz->getTable());
     }
@@ -476,7 +476,7 @@ final class CommandReconizeTest extends TestCase
         $r3 = $this->r3;
         $r4 = $this->r4;
 
-        $cmdRcnz = new CommandReconize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
         $cmdRcnz->run(['returnLimit' => [2]]);
         $this->assertEquals([$r0, $r1], $cmdRcnz->getTable());
     }
