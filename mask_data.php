@@ -74,7 +74,7 @@ $test->run(['setTeamsToken'=>['MY_TEAMS_WEBHOOK_TOKEN']]);
 $test->run(['sendToTeams' => []]);
 */
 
-require_once("src/commandRecognize.php");
-$test = new commandRecognize($outPutDatas);
-$test->run(['setGoogleApiKey'=>'AIzaSyCbZsZPeVOaTGF1CrQjK2DnZgqfNvLxH54']);
+// require_once("src/commandRecognize.php");
+// $test = new commandRecognize($outPutDatas);
+// $test->run(['setGoogleApiKey'=>'']);
 // $test->run(['appendGoogleApi' => '']);
