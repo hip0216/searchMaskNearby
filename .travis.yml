@@ -9,6 +9,9 @@ branches:
     - master
     - commandReconize
 
+before_install:
+  - cp src/tokenExample.php src/token.php 
+
 install:
   - composer install
 
