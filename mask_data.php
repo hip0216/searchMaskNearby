@@ -72,3 +72,8 @@ $test = new commandRecognize($outPutDatas);
 $test->run(['setTeamsToken'=>'this is token']);
 $test->run(['sendToTeams' => '???']);
 */
+
+require_once("src/commandRecognize.php");
+$test = new commandRecognize($outPutDatas);
+$test->run(['setGoogleApiKey'=>'AIzaSyCbZsZPeVOaTGF1CrQjK2DnZgqfNvLxH54']);
+// $test->run(['appendGoogleApi' => '']);

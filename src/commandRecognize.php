@@ -1,16 +1,22 @@
 <?php
 
 use Sebbmyr\Teams\TeamsConnector;
+use SKAgarwal\GoogleApi\PlacesApi;
 
 // You should copy tokenEample.php to token.php
 // Then add your own token in token.php,
 // or run mask_data.php by --setTeamsToken first
 require 'token.php';
 require 'setToken.php';
+require 'googleApi/googleApi.php';
+require 'googleApi/file_process.php';
 require 'teamsMessage/messageCard.php';
 require 'teamsMessage/parseArrayToString.php';
 use SmallFreshMeat\Teams\MessageCard;
 use function SmallFreshMeat\parseArrayToString;
+use SmallFreshMeat\GoogleApi\GoogleInfoForPharmacy;
+use SmallFreshMeat\SaveFile\FileProcess;
+
 
 class CommandRecognize
 {
@@ -272,6 +278,18 @@ class CommandRecognize
                 // Send the card to Teams' channel
                 $connector->send($card);
                 break;
+            case 'setGoogleApiKey':
+                $key = $vals;
+                setToken($vals, 'GOOGLE_API_ACCESS_KEY');
+                break;
+            case 'appendGoogleApi':
+                $ACCESS_KEY = GOOGLE_API_ACCESS_KEY;
+                $fileProcess = new FileProcess();
+                $pharmacies = new GoogleInfoForPharmacy($ACCESS_KEY);
+                $processedDatas = $file->return_yes_or_no($this->table);
+                $pharmacies->appendGoogleInfo($processedDatas);
+                $fileProcess->save_data($pharmacies->isNotInFile);
+                $this->table = $pharmacies->appendDatas;
             }
         }
     }
