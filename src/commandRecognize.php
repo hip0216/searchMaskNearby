@@ -6,6 +6,7 @@ use Sebbmyr\Teams\TeamsConnector;
 // Then add your own token in token.php,
 // or run mask_data.php by --setTeamsToken first
 require 'token.php';
+require 'setToken.php';
 require 'teamsMessage/messageCard.php';
 require 'teamsMessage/parseArrayToString.php';
 use SmallFreshMeat\Teams\MessageCard;
@@ -249,6 +250,8 @@ class CommandRecognize
                 $this->returnLimit = min($vals[0], 30);
                 break;
             case 'setTeamsToken':
+                $token = $vals;
+                setToken($vals,'TEAMS_WEBHOOK_TOKEN');
                 break;
             case 'sendToTeams':
                 // Require the webhook token

@@ -69,5 +69,6 @@ if ($outPutDatas) {
 require_once("src/commandRecognize.php");
 
 $test = new commandRecognize($outPutDatas);
+$test->run(['setTeamsToken'=>'this is token']);
 $test->run(['sendToTeams' => '???']);
 */
