@@ -6,7 +6,7 @@ use SKAgarwal\GoogleApi\PlacesApi;
 // You should copy tokenEample.php to token.php
 // Then add your own token in token.php,
 // or run mask_data.php by --setTeamsToken first
-require 'token.php';
+include_once 'token.php';
 require 'setToken.php';
 require 'googleApi/googleApi.php';
 require 'googleApi/file_process.php';
