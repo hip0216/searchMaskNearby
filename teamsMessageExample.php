@@ -4,9 +4,9 @@ require 'vendor/autoload.php';
 use Sebbmyr\Teams\TeamsConnector;
 
 // You should add your own token in token.php
-require 'token.php';
-require 'teamsMessage/messageCard.php';
-require 'teamsMessage/parseArrayToString.php';
+require 'src/token.php';
+require 'src/teamsMessage/messageCard.php';
+require 'src/teamsMessage/parseArrayToString.php';
 use SmallFreshMeat\Teams\MessageCard;
 use function SmallFreshMeat\parseArrayToString;
 

@@ -1,4 +1,16 @@
 <?php
+
+use Sebbmyr\Teams\TeamsConnector;
+
+// You should copy tokenEample.php to token.php
+// Then add your own token in token.php,
+// or run mask_data.php by --setTeamsToken first
+require 'token.php';
+require 'teamsMessage/messageCard.php';
+require 'teamsMessage/parseArrayToString.php';
+use SmallFreshMeat\Teams\MessageCard;
+use function SmallFreshMeat\parseArrayToString;
+
 class CommandRecognize
 {
     private $table;
@@ -61,7 +73,7 @@ class CommandRecognize
      *                        ＾
      *  a | c | s | i | d | adult | child | sum | institution | address
      * 
-     * @param array $vals input rgument values array for one command
+     * @param array $vals input argument values array for one command
      *
      * @return array return array where map each values to corresponded attribute of table
      */
@@ -236,13 +248,28 @@ class CommandRecognize
             case 'returnLimit':
                 $this->returnLimit = min($vals[0], 30);
                 break;
-            case 'setTeams':
+            case 'setTeamsToken':
                 break;
             case 'sendToTeams':
+                // Require the webhook token
+                $webhook = TEAMS_WEBHOOK_TOKEN;
+
+                // Type your message title here
+                $messageTitle = "查詢結果";
+                // Transform the datas into string and make it formatted
+                $messageContent = parseArrayToString($this->table);
+
+                // You can see the result in the command line if you want
+                // echo $messageContent;
+
+                // Set a Teams connect by webhook
+                $connector = new TeamsConnector($webhook);
+                // Create a Teams message card
+                $card = new MessageCard($messageTitle, $messageContent);
+                // Send the card to Teams' channel
+                $connector->send($card);
                 break;
             }
         }
     }
 }
-
-

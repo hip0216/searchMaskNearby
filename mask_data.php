@@ -63,3 +63,11 @@ if ($outPutDatas) {
 } else {
     printf("查無資料\n");
 }
+
+/*
+// Send Teams' message card test
+require_once("src/commandRecognize.php");
+
+$test = new commandRecognize($outPutDatas);
+$test->run(['sendToTeams' => '???']);
+*/
