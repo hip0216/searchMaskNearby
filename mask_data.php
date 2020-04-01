@@ -65,12 +65,13 @@ if ($outPutDatas) {
 }
 
 /*
-// Send Teams' message card test
 require_once("src/commandRecognize.php");
 
 $test = new commandRecognize($outPutDatas);
-$test->run(['setTeamsToken'=>'this is token']);
-$test->run(['sendToTeams' => '???']);
+
+$test->run(['setTeamsToken'=>['MY_TEAMS_WEBHOOK_TOKEN']]);
+// Send Teams' message card test
+$test->run(['sendToTeams' => []]);
 */
 
 require_once("src/commandRecognize.php");

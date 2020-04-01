@@ -8,8 +8,11 @@ use SKAgarwal\GoogleApi\PlacesApi;
 // or run mask_data.php by --setTeamsToken first
 require 'token.php';
 require 'setToken.php';
+<<<<<<< HEAD
 require 'googleApi/googleApi.php';
 require 'googleApi/file_process.php';
+=======
+>>>>>>> origin/master
 require 'teamsMessage/messageCard.php';
 require 'teamsMessage/parseArrayToString.php';
 use SmallFreshMeat\Teams\MessageCard;
@@ -256,8 +259,12 @@ class CommandRecognize
                 $this->returnLimit = min($vals[0], 30);
                 break;
             case 'setTeamsToken':
+<<<<<<< HEAD
                 $token = $vals;
                 setToken($vals,'TEAMS_WEBHOOK_TOKEN');
+=======
+                setToken($vals[0],'TEAMS_WEBHOOK_TOKEN');
+>>>>>>> origin/master
                 break;
             case 'sendToTeams':
                 // Require the webhook token
