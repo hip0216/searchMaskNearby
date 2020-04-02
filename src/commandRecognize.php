@@ -1,7 +1,6 @@
 <?php
 
 use Sebbmyr\Teams\TeamsConnector;
-use SKAgarwal\GoogleApi\PlacesApi;
 
 // You should copy tokenEample.php to token.php
 // Then add your own token in token.php,
@@ -285,10 +284,11 @@ class CommandRecognize
                 $ACCESS_KEY = GOOGLE_API_ACCESS_KEY;
                 $fileProcess = new FileProcess();
                 $pharmacies = new GoogleInfoForPharmacy($ACCESS_KEY);
-                $processedDatas = $file->return_yes_or_no($this->table);
+                $processedDatas = $fileProcess->return_yes_or_no($this->table);
                 $pharmacies->appendGoogleInfo($processedDatas);
                 $fileProcess->save_data($pharmacies->isNotInFile);
-                $this->table = $pharmacies->appendDatas;
+                return $pharmacies->appendDatas;
+                break;
             }
         }
     }

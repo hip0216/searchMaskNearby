@@ -1,8 +1,8 @@
 <?php
 namespace SmallFreshMeat\GoogleApi;
 
-// require_once __DIR__ . "/vendor/autoload.php";
-// use SKAgarwal\GoogleApi\PlacesApi;
+require "vendor/autoload.php";
+use SKAgarwal\GoogleApi\PlacesApi;
 
 
 
@@ -40,6 +40,7 @@ class GoogleInfoForPharmacy {
         $this->isInFile = $data['yes'];
         $this->isNotInFile = $data['no'];
 
+        // print_r($this->isNotInFile); exit;
         $place_details = $this->getPlaceDetail();
         if($place_details == array()) {
             $this->isInFile;
