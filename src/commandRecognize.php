@@ -24,6 +24,7 @@ class CommandRecognize
     private $sortHeaders = [];
     private $filterHeaders = [];
     private $returnLimit = 30;
+    private $appendGoogleData = [];
 
     /**
      * construct of CommandRecognize
@@ -287,9 +288,14 @@ class CommandRecognize
                 $processedDatas = $fileProcess->return_yes_or_no($this->table);
                 $pharmacies->appendGoogleInfo($processedDatas);
                 $fileProcess->save_data($pharmacies->isNotInFile);
-                return $pharmacies->appendDatas;
+                $this->appendGoogleData = $pharmacies->appendDatas;
                 break;
             }
         }
+    }
+
+    public function giveAppendGoogleData() 
+    {
+        return $this->appendGoogleData;
     }
 }

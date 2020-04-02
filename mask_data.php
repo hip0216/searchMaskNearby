@@ -62,7 +62,8 @@ usort($outPutDatas, function ($a, $b) {
 /*
 require_once("src/commandRecognize.php");
 $test = new commandRecognize($outPutDatas);
-$outPutDatas = $test->run(['appendGoogleApi' => '']);
+$test->run(['appendGoogleApi' => '']);
+$outPutDatas = $test->giveAppendGoogleData();
 */
 
 if ($outPutDatas) {
