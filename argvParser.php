@@ -17,11 +17,11 @@ class argvParser
     {
         $this->argv = $argv;
         $this->specs = new OptionCollection;
-        $this->specs->add('sort:', '排序方法'.join(' ', self::enableString))
+        $this->specs->add('sort+', '排序方法'.join(' ', self::enableString))
             ->isa('string');
-        $this->specs->add('sortDecrease:', '排序方法'.join(' ', self::enableString))
+        $this->specs->add('sortDecrease+', '排序方法'.join(' ', self::enableString))
             ->isa('string');
-        $this->specs->add('sortIncrease:', '排序方法'.join(' ', self::enableString))
+        $this->specs->add('sortIncrease+', '排序方法'.join(' ', self::enableString))
             ->isa('string');
 
         $this->specs->add('d|address+', '篩選地址')
@@ -34,7 +34,7 @@ class argvParser
             ->isa('Number');
         $this->specs->add('s|sum+', '用總數篩選')
             ->isa('Number');
-        $this->specs->add('returnLimit:', '最大回傳數量')
+        $this->specs->add('returnLimit+', '最大回傳數量')
             ->isa('Number');
         $this->specs->add('sendToTeams', '發送到teams');
 
@@ -50,45 +50,35 @@ class argvParser
     public function getOption()
     {
         $parser = new OptionParser($this->specs);
+
         try {
             $result = $parser->parse($this->argv);
-            $temp = ['filter' => [], 'sort' =>[], 'preReturn' => [], 'return' => [], 'alone' => []];
+            $re = [];
             foreach ($result->keys as $key => $spec) {
-                // print_r($spec);
-                switch (self::optionType($key)) {
-                    case 'filter':
-                        if (self::FilterValueError($spec)) {
-                            throw new InvalidArgumentException($key.'參數錯誤');
-                        }
-                        break;
-                    case 'sort':
-                        break;
-                    case 'preReturn':
-                        break;
-                    case 'return':
-                        break;
-                    case 'alone':
-                        break;
-                    default:
-                        break;
-                }
                 if ($key == 'help') {
                     $this->getHelp();
                     return [];
                 }
-                $temp[self::optionType($key)][$key] = $spec->value;
+                $re[$key] = $spec->value;
             }
-            $re = [];
-            foreach ($temp as $key => $value) {
-                if ($value != []) {
-                    $re = $value;
-                }
-            }
+            uksort($re, 'argvParser::keyCmp');
             return($re);
         } catch (Exception $e) {
             echo $e->getMessage();
             return [];
         }
+    }
+
+
+    public static function keyCmp($a, $b)
+    {
+        $order = ['address', 'institution', 'adult', 'child', 'sum',
+                  'sort', 'sortDecrease', 'sortIncrease',
+                  'returnLimit',
+                  'sendToTeams',
+                  'setTeams',
+                  'help'];
+        return array_search($a, $order) - array_search($b, $order);
     }
 
     private function optionType($str)

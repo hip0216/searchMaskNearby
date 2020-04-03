@@ -4,7 +4,8 @@ class FileProcess{
     
     private function clean_data($file_array){
         for($i=0;$i<count($file_array);$i++){
-            unset($file_array[$i]["醫事機構電話"],$file_array[$i]["醫事機構名稱"],$file_array[$i]["成人口罩剩餘數"],);
+            // unset($file_array[$i]["醫事機構電話"],$file_array[$i]["醫事機構名稱"],$file_array[$i]["成人口罩剩餘數"],);
+            unset($file_array[$i]["醫事機構名稱"],$file_array[$i]["成人口罩剩餘數"],);
         }
         return $file_array;
     }
@@ -69,7 +70,8 @@ class FileProcess{
                 $file[$i]["星等"]="無星等資訊";
                 $open_and_end="無營業時間資訊";
             }
-            fwrite($open_file,$file[$i]["醫事機構名稱"].",".$file[$i]["醫事機構地址"].",".$file[$i]["醫事機構電話"].",".$file[$i]["成人口罩剩餘數"].",".$file[$i]["醫事機構地址"].",".$file[$i]["星等"].","."$open_and_end"."\n");
+            // fwrite($open_file,$file[$i]["醫事機構名稱"].",".$file[$i]["醫事機構地址"].",".$file[$i]["醫事機構電話"].",".$file[$i]["成人口罩剩餘數"].",".$file[$i]["醫事機構地址"].",".$file[$i]["星等"].","."$open_and_end"."\n");
+            fwrite($open_file,$file[$i]["醫事機構名稱"].",".$file[$i]["醫事機構地址"].",".$file[$i]["成人口罩剩餘數"].",".$file[$i]["醫事機構地址"].",".$file[$i]["星等"].","."$open_and_end"."\n");
         }
     }
 
@@ -80,7 +82,7 @@ class FileProcess{
             return $this->search_file($raw_data,$hash_array);
         }
         else{
-            return ["yes"=>[],"no"=>[$raw_data]];
+            return ["yes"=>[],"no"=>$raw_data];
         }
     }
     

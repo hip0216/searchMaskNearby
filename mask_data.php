@@ -58,6 +58,14 @@ usort($outPutDatas, function ($a, $b) {
     return $b['成人口罩剩餘數'] - $a['成人口罩剩餘數'];
 });
 
+// append google api data
+/*
+require_once("src/commandRecognize.php");
+$test = new commandRecognize($outPutDatas);
+$test->run(['appendGoogleApi' => '']);
+$outPutDatas = $test->giveAppendGoogleData();
+*/
+
 if ($outPutDatas) {
     $climate->table($outPutDatas);
 } else {
@@ -73,8 +81,3 @@ $test->run(['setTeamsToken'=>['MY_TEAMS_WEBHOOK_TOKEN']]);
 // Send Teams' message card test
 $test->run(['sendToTeams' => []]);
 */
-
-// require_once("src/commandRecognize.php");
-// $test = new commandRecognize($outPutDatas);
-// $test->run(['setGoogleApiKey'=>'']);
-// $test->run(['appendGoogleApi' => '']);
