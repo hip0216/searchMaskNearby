@@ -140,7 +140,7 @@ class FileProcess{
             return $saveYesAndNoArray;
         }
         else{
-            return ["yes"=>[],"no"=>[$rawData]];
+            return ["yes"=>[],"no"=>$rawData];
         }
     }
     

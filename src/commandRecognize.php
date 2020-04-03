@@ -8,7 +8,7 @@ use Sebbmyr\Teams\TeamsConnector;
 include_once 'token.php';
 require 'setToken.php';
 require 'googleApi/googleApi.php';
-require 'googleApi/file_process.php';
+require 'googleApi/FileProcess.php';
 require 'teamsMessage/messageCard.php';
 require 'teamsMessage/parseArrayToString.php';
 use SmallFreshMeat\Teams\MessageCard;
