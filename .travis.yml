@@ -7,7 +7,7 @@ php:
 branches:
   only:
     - master
-    - commandReconize
+    - commandRecognize
 
 before_install:
   - cp src/tokenExample.php src/token.php 
