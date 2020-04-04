@@ -409,6 +409,22 @@ final class CommandRecognizeTest extends TestCase
         $this->assertEquals([], $cmdRcnz->getTable());
     }
 
+    public function testRunExpectEmptyWhenStringFilterGetNoMatch(): void
+    {
+        $r0 = $this->r0;
+        $r1 = $this->r1;
+        $r2 = $this->r2;
+        $r3 = $this->r3;
+        $r4 = $this->r4;
+
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['d' => ['有']]); 
+        $this->assertEquals([], $cmdRcnz->getTable());
+        $cmdRcnz = new CommandRecognize([$r0, $r1, $r2, $r3, $r4]);
+        $cmdRcnz->run(['i' => ['沒有']]);
+        $this->assertEquals([], $cmdRcnz->getTable());
+    }
+
     public function testRunExpectStringFilterWorkWhenFilterStringSingle(): void
     {
         $r0 = $this->r0;
