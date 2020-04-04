@@ -20,7 +20,7 @@ use SmallFreshMeat\SaveFile\FileProcess;
 
 class CommandRecognize
 {
-    public $table;
+    private $table;
     private $sortInIncrease = false;
     private $sortHeaders = [];
     private $filterHeaders = [];
