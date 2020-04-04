@@ -75,7 +75,9 @@ sort|m,n,...|0-5|"adult", "a", <br>"child", "c", <br>"sum", "s", <br>"address", 
 |h<br>help|null|0|true|alone|
 
 ### Parameter parsing should rearrange the order as follow:
-```graphviz
+![](https://i.imgur.com/XfQ5y9W.png)
+
+<!--```graphviz
 digraph gname{
     rankdir=LR
     filter [color=lightblue, style=filled] 
@@ -87,4 +89,4 @@ digraph gname{
     st ->alone -> ed
 
 }
-```
+```-->
