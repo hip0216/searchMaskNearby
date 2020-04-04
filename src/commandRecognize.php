@@ -92,13 +92,6 @@ class CommandRecognize
             's' => SUM, 'sum' => SUM,
             'i' => INSTITUTION, 'institution' => INSTITUTION,
             'd' => ADDRESS, 'address' => ADDRESS,
-            '醫事機構代碼' => ID,
-            '醫事機構名稱' => INSTITUTION,
-            '醫事機構地址' => ADDRESS,
-            '醫事機構電話' => PHONENUMBER,
-            '成人口罩剩餘數' => ADULT,
-            '兒童口罩剩餘數' => CHILD,
-            '來源資料時間' => TIME,
         ];
         foreach ($vals as $val) {
             $sortKeys[] = $mapping[$val];

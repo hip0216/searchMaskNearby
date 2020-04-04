@@ -6,3 +6,4 @@ const PHONENUMBER = '機構電話';
 const ADULT = '成人口罩';
 const CHILD = '孩童口罩';
 const SUM = '口罩總數';
+const TIME = '更新時間';
