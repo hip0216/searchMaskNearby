@@ -69,6 +69,9 @@ dealField($datas);
 $cmdRcnz = new CommandRecognize($datas);
 $cmdRcnz->run($option);
 $datas = $cmdRcnz->getTable();
+renderColor($datas, ADULT);
+renderColor($datas, CHILD);
+renderColor($datas, SUM);
 
 // show
 $climate = new CLImate();
