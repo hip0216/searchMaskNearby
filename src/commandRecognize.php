@@ -6,6 +6,7 @@ use Sebbmyr\Teams\TeamsConnector;
 // Then add your own token in token.php,
 // or run mask_data.php by --setTeamsToken first
 include_once 'token.php';
+require_once 'adjustText.php';
 require 'setToken.php';
 require 'googleApi/googleApi.php';
 require 'googleApi/file_process.php';
@@ -177,6 +178,9 @@ class CommandRecognize
     public function stringFilter(array $keywords): void
     {
         $header = $this->filterHeaders[0];
+        foreach ($keywords as &$ky) {
+            $ky = adjustText($ky);
+        }
         foreach ($this->table as $row) {
             $success = true;
             foreach ($keywords as $keyword) {
