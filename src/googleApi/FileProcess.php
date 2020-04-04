@@ -4,7 +4,7 @@ class FileProcess{
 
     private function informationArrayToString($informationArray){
         $nowTime=strtotime("now");
-        $outPutString=$informationArray["醫事機構名稱"].",".$informationArray["醫事機構地址"].",".$informationArray["成人口罩剩餘數"].",";
+        $outPutString=$informationArray["機構名稱"].",".$informationArray["機構地址"].",".$informationArray["成人口罩"].",";
         if(@$informationArray['星等']!=""){
             $outPutString.=$informationArray['星等'].",";
         }
@@ -68,7 +68,7 @@ class FileProcess{
         $inFile=[];
         $nowTime=(int)strtotime("now");
         for($i=0;$i<count($inputDataArray);$i++){
-            $hospital_address=$inputDataArray[$i]["醫事機構地址"];
+            $hospital_address=$inputDataArray[$i]["機構地址"];
             if(isset($hash_array[$hospital_address]) and $this->checkDataTime($nowTime,$hash_array[$hospital_address]["fileData"][5])){
                 $this->appendStarToArray($inputDataArray[$i],$hash_array[$hospital_address]["fileData"][3]);
                 if($hash_array[$hospital_address]["fileData"][4]!="無營業時間資訊"){
@@ -108,8 +108,8 @@ class FileProcess{
             $maskHashArray=$this->makeHashForFile($localFile,False);
             for($i=0;$i<count($wantSaveData);$i++){
                 $informationString=$this->informationArrayToString($wantSaveData[$i]);
-                if (isset($maskHashArray[$wantSaveData[$i]["醫事機構地址"]])){
-                    $localFile[$maskHashArray[$wantSaveData[$i]["醫事機構地址"]]["inFileIndex"]]=$informationString;
+                if (isset($maskHashArray[$wantSaveData[$i]["機構地址"]])){
+                    $localFile[$maskHashArray[$wantSaveData[$i]["機構地址"]]["inFileIndex"]]=$informationString;
                 }
                 else{
                     $localFile[]=$informationString;

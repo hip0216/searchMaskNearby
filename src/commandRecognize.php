@@ -20,7 +20,7 @@ use SmallFreshMeat\SaveFile\FileProcess;
 
 class CommandRecognize
 {
-    private $table;
+    public $table;
     private $sortInIncrease = false;
     private $sortHeaders = [];
     private $filterHeaders = [];
@@ -68,6 +68,7 @@ class CommandRecognize
     public function getTable(): array
     {
         return array_slice($this->table, 0, $this->returnLimit);
+        // return array_slice($this->giveAppendGoogleData(), 0, $this->returnLimit);
     }
 
     /**
@@ -282,8 +283,7 @@ class CommandRecognize
                 $connector->send($card);
                 break;
             case 'setGoogleApiKey':
-                $key = $vals;
-                setToken($vals, 'GOOGLE_API_ACCESS_KEY');
+                setToken($vals[0], 'GOOGLE_API_ACCESS_KEY');
                 break;
             case 'appendGoogleApi':
                 $ACCESS_KEY = GOOGLE_API_ACCESS_KEY;
@@ -298,7 +298,7 @@ class CommandRecognize
         }
     }
 
-    public function giveAppendGoogleData() 
+    private function giveAppendGoogleData() 
     {
         return $this->appendGoogleData;
     }

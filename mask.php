@@ -9,7 +9,7 @@ use League\CLImate\CLImate;
 function downloadFile()
 {
     $maskDataUrl = "http://data.nhi.gov.tw/Datasets/Download.ashx?rid=A21030000I-D50001-001&l=https://data.nhi.gov.tw/resource/mask/maskdata.csv";
-    if (time() - filemtime("maskdata.csv") > 300) {
+    if (time() - filemtime("maskdata.csv") > 300000000) {
         unlink("maskdata.csv");
     }
     if (is_file("maskdata.csv") === false) {
@@ -59,7 +59,7 @@ if (downloadFile() === false) {
 // parse argv parameter to $option
 $parser = new argvParser($argv);
 $option = $parser->getOption();
-print_r($option);
+// print_r($option);
 
 // convert maskdata
 $datas = new Parser("maskdata.csv");
@@ -68,6 +68,7 @@ $time = $datas[0][TIME];
 dealField($datas);
 $cmdRcnz = new CommandRecognize($datas);
 $cmdRcnz->run($option);
+// $cmdRcnz->run(['appendGoogleApi' => '']);
 $datas = $cmdRcnz->getTable();
 renderColor($datas, ADULT);
 renderColor($datas, CHILD);

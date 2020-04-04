@@ -60,10 +60,10 @@ class GoogleInfoForPharmacy {
         }
         $appendDatas = array_merge($this->isNotInFile, $this->isInFile);
         usort($appendDatas, function($a, $b) {
-            if ($a['成人口罩剩餘數'] == $b['成人口罩剩餘數']) {
+            if ($a['成人口罩'] == $b['成人口罩']) {
                 return 0;
             }
-            return ($a['成人口罩剩餘數'] > $b['成人口罩剩餘數']) ? -1 : 1;
+            return ($a['成人口罩'] > $b['成人口罩']) ? -1 : 1;
         });
 
         // 處理現在是否營業中
@@ -106,16 +106,16 @@ class GoogleInfoForPharmacy {
             return array();
         }
         $places = array_map(function($val) {
-            return $val['醫事機構名稱']. " ". $val['醫事機構地址'];
+            return $val['機構名稱']. " ". $val['機構地址'];
         }, $this->isNotInFile);
         $place_ids = array();
         foreach($places as $place) {
             $info = $this->googlePlaces->findPlace($place, "textquery", ['language'=>'zh_TW'])->all();
             $place_id = array_map(function($val) {
                 return $val['place_id'];
-            }, $info['candidates']->all())[0];
+            }, $info['candidates']->all());
             
-            $place_ids[] = $place_id;
+            $place_ids[] = isset($place_id[0])? $place_id[0]: '0';
         }
         return $place_ids;
     }
@@ -130,14 +130,22 @@ class GoogleInfoForPharmacy {
         }
         $place_details = array();
         foreach($place_ids as $place_id) {
-            $details = $this->googlePlaces->placeDetails($place_id, ['language'=>'zh_TW'])->all()['result'];
-            $openingHours = (isset($details['opening_hours']))? $details['opening_hours']: ["無營業時間資訊"];
-            $rating = (isset($details['rating']))? $details['rating']: "無星等資訊";
-            $place_details[] = array
-                (
-                    'opening_hours' => $openingHours,
-                    'rating' => $rating,
-                );
+            if($place_id !== '0') {
+                $details = $this->googlePlaces->placeDetails($place_id, ['language'=>'zh_TW'])->all()['result'];
+                $openingHours = (isset($details['opening_hours']))? $details['opening_hours']: ["無營業時間資訊"];
+                $rating = (isset($details['rating']))? $details['rating']: "無星等資訊";
+                $place_details[] = array
+                    (
+                        'opening_hours' => $openingHours,
+                        'rating' => $rating,
+                    );
+            }else {
+                $place_details[] = array
+                    (
+                        'opening_hours' => ['無營業時間資訊'],
+                        'rating' => '無星等資訊',
+                    );
+            }
         }
         return $place_details;
     }
