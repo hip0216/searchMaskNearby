@@ -43,6 +43,14 @@ function convertHeader($datas) {
     return $ret;
 }
 
+function dealField(&$datas) {
+    foreach($datas as &$data) {
+        unset($data[ID]);
+        unset($data[TIME]);
+        $data[SUM] = $data[ADULT]+$data[CHILD];
+    }
+}
+
 if (downloadFile() === false) {
     print("下載檔案錯誤");
     exit();
@@ -56,17 +64,20 @@ print_r($option);
 // convert maskdata
 $datas = new Parser("maskdata.csv");
 $datas = convertHeader($datas->all());
+$time = $datas[0][TIME];
+dealField($datas);
 $cmdRcnz = new CommandRecognize($datas);
 $cmdRcnz->run($option);
 $datas = $cmdRcnz->getTable();
 
 // show
 $climate = new CLImate();
-if ($datas)
+if ($datas) {
     $climate->table($datas);
-else
+} else {
     echo "No Result\n";
-
+}
+$climate->put("Last updat: $time");
 
 
 
