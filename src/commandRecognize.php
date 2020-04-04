@@ -289,9 +289,9 @@ class CommandRecognize
                 $ACCESS_KEY = GOOGLE_API_ACCESS_KEY;
                 $fileProcess = new FileProcess();
                 $pharmacies = new GoogleInfoForPharmacy($ACCESS_KEY);
-                $processedDatas = $fileProcess->return_yes_or_no($this->table);
+                $processedDatas = $fileProcess->checkDataInFile($this->table);
                 $pharmacies->appendGoogleInfo($processedDatas);
-                $fileProcess->save_data($pharmacies->isNotInFile);
+                $fileProcess->saveData($pharmacies->isNotInFile);
                 $this->appendGoogleData = $pharmacies->appendDatas;
                 break;
             }

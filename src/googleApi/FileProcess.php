@@ -159,7 +159,7 @@ class FileProcess{
     *this method for googleApi to search data is in file or not in file and use file data append star and opentime
     *@return array
     */
-    public function return_yes_or_no($rawData){
+    public function checkDataInFile($rawData){
         @$useToCheckrawData=file("GoogleMapInforamtion.txt");
         if(@$useToCheckrawData){
             $hashArray=$this->makeHashForFile($useToCheckrawData,true);
@@ -173,7 +173,7 @@ class FileProcess{
     /**
     *this method for googleApi to save data
     */
-    public function save_data($wantSaveData){
+    public function saveData($wantSaveData){
         $this->checkDataStatus($wantSaveData);
     }
 
